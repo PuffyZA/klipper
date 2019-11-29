@@ -31,6 +31,7 @@ class MCU_stepper:
         self._invert_dir = dir_pin_params['invert']
         self._mcu_position_offset = self._tag_position = 0.
         self._min_stop_interval = 0.
+        self._speed_factor = 1.
         self._reset_cmd_id = self._get_position_cmd = None
         self._active_callbacks = []
         ffi_main, self._ffi_lib = chelper.get_ffi()
@@ -62,6 +63,10 @@ class MCU_stepper:
         ffi_main, ffi_lib = chelper.get_ffi()
         sk = ffi_main.gc(getattr(ffi_lib, alloc_func)(*params), ffi_lib.free)
         self.set_stepper_kinematics(sk)
+    def setup_speed_factor(self, factor):
+        self._speed_factor = factor
+    def get_speed_factor(self):
+        return self._speed_factor
     def _build_config(self):
         max_error = self._mcu.get_max_stepper_error()
         min_stop_interval = max(0., self._min_stop_interval - max_error)

@@ -50,6 +50,7 @@ class RotaryDeltaKinematics:
         for s in self.get_steppers():
             s.set_trapq(toolhead.get_trapq())
             toolhead.register_step_generator(s.generate_steps)
+            s.setup_speed_factor(50.) # XXX
         # Setup boundary checks
         self.need_home = True
         self.limit_xy2 = -1.
